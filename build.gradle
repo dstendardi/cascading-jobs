@@ -43,6 +43,7 @@ dependencies{
     compile 'cascading:cascading-local:'+ cascadingVersion
     compile 'cascading:cascading-hadoop:'+ cascadingVersion
 
+    compile 'org.apache.lucene:lucene-analyzers-common:4.3.0'
 
     cucumberRuntime files("${jar.archivePath}")
 

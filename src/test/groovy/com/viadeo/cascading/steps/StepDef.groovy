@@ -36,4 +36,20 @@ Then(~'^the output file should contain the following lines$') { table ->
     assert new File(output, "_SUCCESS").exists()
     def result = new File(output, "part-00000")
     assert result.exists()
+    lines = result.readLines()
+    headers = lines.remove(0).split("\t")
+
+    b = []
+    lines.eachWithIndex  { it, index ->
+        list = it.split("\t")
+        given = [:]
+        list.eachWithIndex { nit, nindex ->
+            given[headers[nindex]] = nit
+        }
+        b << given
+    }
+
+    def a = table.asMaps()
+
+    assert a == b
 }

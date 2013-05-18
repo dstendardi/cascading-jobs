@@ -4,11 +4,13 @@ import java.util.Properties;
 
 import cascading.flow.FlowDef;
 import cascading.flow.hadoop.HadoopFlowConnector;
+import cascading.pipe.Each;
 import cascading.pipe.Pipe;
 import cascading.property.AppProps;
 import cascading.scheme.hadoop.TextDelimited;
 import cascading.tap.Tap;
 import cascading.tap.hadoop.Hfs;
+import cascading.tuple.Fields;
 
 public class Main {
 
@@ -29,6 +31,10 @@ public class Main {
 
         // specify a pipe to connect the taps
         Pipe copyPipe = new Pipe("copy");
+
+        Fields scrubArguments = new Fields( "id", "term" );
+
+        copyPipe = new Each( copyPipe, scrubArguments, new ScrubFunction( scrubArguments ), Fields.RESULTS );
 
         // connect the taps, pipes, etc., into a flow
         FlowDef flowDef = FlowDef.flowDef()
