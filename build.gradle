@@ -7,25 +7,73 @@
  * chapter in the Gradle Userguide available at /home/dstendardi/Applications/gradle-1.6/docs/userguide/tutorial_java_projects.html
  */
 
-/*
-apply plugin:'java' // applies the java plugin
+
+apply plugin:'java'
+apply plugin: 'idea'
+apply plugin: 'groovy'
+apply plugin: 'maven'
+
+sourceCompatibility = 1.6
+targetCompatibility = 1.6
 
 repositories{
-    mavenCentral() // Use 'maven central' for resolving your thirdparty dependencies.
-                   // you can declare any maven/ivy/file repository to resolve your thirdparty dependencies
+  mavenLocal()
+  mavenCentral()
+  mavenRepo name: 'conjars', url: 'http://conjars.org/repo/'
+  mavenRepo name: 'sonatype', url: 'http://oss.sonatype.org/content/groups/public/'
+
 }
 
+ext.cascadingVersion = '2.1.2'
+
+configurations {
+    cucumberRuntime {
+        extendsFrom testRuntime
+    }
+}
+
+
 dependencies{
-    // in this section you declare your dependencies for your production and your test code.
+    compile("org.apache.hadoop:hadoop-streaming:1.0.4")
+    compile("org.apache.hadoop:hadoop-tools:1.0.4")
 
     // the production code uses the slf4j logging api at compile time
     compile 'org.slf4j:slf4j-api:1.7.5'
+    compile 'cascading:cascading-core:'+ cascadingVersion 
+    compile 'cascading:cascading-local:'+ cascadingVersion
+    compile 'cascading:cascading-hadoop:'+ cascadingVersion
 
-    // declare the dependency for your favourite test framework you want to use in your tests.
-    // TestNG is also supported by the Gradle Test task. Just change the
-    // testCompile dependency to testCompile 'org.testng:testng:6.8.1' and add
-    // 'test.useTestNG()' to your build script.
+
+    cucumberRuntime files("${jar.archivePath}")
+
+    testCompile 'org.codehaus.groovy:groovy-all:2.0.5'
     testCompile "junit:junit:4.11"
+    testCompile "info.cukes:cucumber-junit:1.1.2"
+    testCompile 'info.cukes:cucumber-groovy:1.1.2'
 }
-*/
 
+jar {
+  description = "Assembles a Hadoop ready jar file"
+  doFirst {
+    into( 'lib' ) {
+      from configurations.compile
+    }
+  }
+
+  manifest {
+    attributes( "Main-Class": "com.viadeo.cascading/Main" )
+  }
+}
+
+
+task cucumber() {
+    dependsOn assemble
+    doLast {
+        javaexec {
+            main = "cucumber.api.cli.Main"
+            classpath = configurations.cucumberRuntime
+            args = ['-f', 'pretty', '--glue', 'src/test/groovy', 'src/test/resources']
+
+        }
+    }
+}
