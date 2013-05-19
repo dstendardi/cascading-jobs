@@ -13,16 +13,14 @@ Feature: main
       | java_script | 8     |
       | jāvascript  | 9     |
       | java/script | 10    |
+      | php         | 11    |
+      | PHP         | 12    |
+      | PHP         | 13    |
     When I run the "copy" job
     Then the output file should contain the following lines
-      | term       | id |
-      | javascript | 1  |
-      | javascript | 2  |
-      | javascript | 3  |
-      | javascript | 4  |
-      | javascript | 5  |
-      | javascript | 6  |
-      | javascript | 7  |
-      | javascript | 8  |
-      | javascript | 9  |
-      | javascript | 10 |
+      | preferred  | normalized |
+      | JavaScript | javascript  |
+      | PHP        | php         |
+
+
+

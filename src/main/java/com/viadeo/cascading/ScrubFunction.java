@@ -14,22 +14,24 @@ import java.text.Normalizer;
 public class ScrubFunction extends BaseOperation implements Function {
 
     public ScrubFunction(Fields fieldDeclaration) {
-        super(2, fieldDeclaration);
+        super(2, fieldDeclaration.append(new Fields("normalized")));
     }
 
     public void operate(FlowProcess flowProcess, FunctionCall functionCall) {
         TupleEntry argument = functionCall.getArguments();
         String id = argument.getString("id");
-        String term = scrubText(argument.getString("term"));
+        String term = argument.getString("term");
+        String normalized = scrubText(argument.getString("term"));
         if (term.length() > 0) {
             Tuple result = new Tuple();
             result.add(id);
             result.add(term);
+            result.add(normalized);
             functionCall.getOutputCollector().add(result);
         }
     }
 
-    public String scrubText(String text) {
+    public static String scrubText(String text) {
 
         text = Normalizer
                 .normalize(text, Normalizer.Form.NFD)

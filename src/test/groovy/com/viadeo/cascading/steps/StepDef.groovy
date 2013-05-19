@@ -24,7 +24,7 @@ Before {
 
 Given(~'^a file containing the following lines$') { table ->
     table.raw().each {
-        input <<  it.join("\t")  + "\n"
+        input << it.join("\t") + "\n"
     }
 }
 
@@ -40,7 +40,7 @@ Then(~'^the output file should contain the following lines$') { table ->
     headers = lines.remove(0).split("\t")
 
     b = []
-    lines.eachWithIndex  { it, index ->
+    lines.eachWithIndex { it, index ->
         list = it.split("\t")
         given = [:]
         list.eachWithIndex { nit, nindex ->
@@ -48,8 +48,14 @@ Then(~'^the output file should contain the following lines$') { table ->
         }
         b << given
     }
+    maps = table.asMaps()
 
-    def a = table.asMaps()
 
-    assert a == b
+    def commons = maps.intersect(b)
+    def difference = maps.plus(b)
+    difference.removeAll(commons)
+    assert difference.size == 0
+
+
 }
+
