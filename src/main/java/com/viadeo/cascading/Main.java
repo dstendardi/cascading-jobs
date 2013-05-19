@@ -15,6 +15,7 @@ import cascading.scheme.hadoop.TextDelimited;
 import cascading.tap.Tap;
 import cascading.tap.hadoop.Hfs;
 import cascading.tuple.Fields;
+import org.elasticsearch.hadoop.cascading.ESTap;
 
 public class Main {
 
@@ -22,14 +23,13 @@ public class Main {
 
         // setup
         String inPath = args[0];
-        String outPath = args[1];
         Properties properties = new Properties();
         AppProps.setApplicationJarClass(properties, Main.class);
         HadoopFlowConnector flowConnector = new HadoopFlowConnector(properties);
 
         // create the source tap
         Tap inTap = new Hfs(new TextDelimited(true, "\t"), inPath);
-        Tap outTap = new Hfs(new TextDelimited(true, "\t"), outPath);
+        Tap outTap = new ESTap("criteria/skills", new Fields("preferred", "normalized"));
 
         // normalizer
         Pipe normalizer = new Pipe("normalizer");
