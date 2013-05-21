@@ -1,0 +1,15 @@
+{
+    "type"      : "record",
+    "name"      : "criteria",
+    "namespace" : "com.viadeo.cascading.avro",
+    "fields" : [
+        {
+            "name" : "id",
+            "type" : "string"
+        },
+        {
+            "name" : "term",
+            "type" : "string"
+        }
+    ]
+}

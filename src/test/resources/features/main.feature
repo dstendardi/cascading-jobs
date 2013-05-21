@@ -1,26 +1,45 @@
-Feature: main
+Feature: Criteria computations
+  As a website owner
+  I want to create better clustering of user submitted data
+  So I increase the average "findability" of members
 
-  Scenario: simple_copy
-    Given a file containing the following lines
-      | term        | id    |
-      | Java Script | 1     |
-      | javascript  | 2     |
-      | JavaScript  | 3     |
-      | JavaScript  | 4     |
-      | JavaScript  | 5     |
-      | JavaScript  | 6     |
-      | java-script | 7     |
-      | java_script | 8     |
-      | jāvascript  | 9     |
-      | java/script | 10    |
-      | php         | 11    |
-      | PHP         | 12    |
-      | PHP         | 13    |
-    When I run the "copy" job
+  Scenario: Merge and compute preferred variants from multiple criteria sources
+    Given a file containing the following 'skill'
+      | id | term        |
+      | 1  | Java Script |
+      | 2  | javascript  |
+      | 3  | JavaScript  |
+      | 4  | JavaScript  |
+      | 5  | JavaScript  |
+      | 6  | JavaScript  |
+      | 7  | java-script |
+      | 8  | java_script |
+      | 9  | jāvascript  |
+      | 10 | java/script |
+      | 11 | php         |
+      | 12 | PHP         |
+      | 13 | PHP         |
+    And a file containing the following 'location'
+      | id | term  |
+      | 14 | paris |
+      | 15 | paris |
+      | 16 | Paris |
+      | 17 | Paris |
+      | 18 | Paris |
+      | 19 | PARIS |
+      | 20 | PARIS |
+    When I run the "Criteria" job
     Then the output file should contain the following lines
-      | preferred  | normalized |
-      | JavaScript | javascript  |
-      | PHP        | php         |
-
-
-
+      | preferred | normalized | origin      | type     |
+      | false     | javascript | Java Script | skill    |
+      | true      | javascript | JavaScript  | skill    |
+      | false     | paris      | PARIS       | location |
+      | true      | php        | PHP         | skill    |
+      | true      | paris      | Paris       | location |
+      | false     | javascript | java-script | skill    |
+      | false     | javascript | java/script | skill    |
+      | false     | javascript | java_script | skill    |
+      | false     | javascript | javascript  | skill    |
+      | false     | javascript | jāvascript  | skill    |
+      | false     | paris      | paris       | location |
+      | false     | php        | php         | skill    |
