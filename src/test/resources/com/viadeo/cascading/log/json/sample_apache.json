@@ -1,0 +1,24 @@
+{"id": "-", "timestamp": "2013-05-29T11:55:00+0200", "pid": "27722", "ip": {
+    "remote": "192.158.15.12",
+    "local": "192.158.15.11"
+}, "request": {
+    "client": "192.158.15.11",
+    "method": "GET",
+    "path": "/foo",
+    "query": "?ts=1369824779796",
+    "protocol": "HTTP/1.1",
+    "headers": {
+        "Referer": "http://www.boo.com/fr/company",
+        "User-Agent": "Mozilla/5.0 (Windows NT 5.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.94 Safari/537.36",
+        "X-Forwarded-For": "196.217.151.196, 93.184.214.111, 46.22.78.50",
+        "Cookie": {
+            "JSESSIONID": "53059F00AF23EDB8BD3FE4C4119BC919",
+            "rememberMe": "0031bysgg6zayraw"
+        }
+    }
+}, "response": {
+    "status": "200",
+    "duration": "4157",
+    "size": "26",
+    "Content-Type": "text/plain"
+}}

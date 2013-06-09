@@ -22,6 +22,7 @@ configurations {
     all*.exclude group: 'org.mortbay.jetty'
     all*.exclude group: 'tomcat'
     all*.exclude group: 'org.apache.hive'
+    all*.exclude module: 'slf4j-log4j12'
     cucumberRuntime {
         exclude group: 'commons-httpclient'
         extendsFrom testRuntime
@@ -29,9 +30,13 @@ configurations {
 }
 
 dependencies {
-    compile group: 'org.apache.hadoop', name: 'hadoop-streaming', version: '1.2.0'
-    compile group: 'org.apache.hadoop', name: 'hadoop-tools', version: '1.2.0'
-    compile group: 'org.apache.hadoop', name: 'hadoop-core', version: '1.2.0'
+    compile group: 'com.google.guava', name: 'guava', version: '14.0.1'
+    compile group: 'com.twitter', name: 'maple', version: '0.2.7'
+    compile(group: 'org.apache.hbase', name: 'hbase', version: '0.92.1-cdh4.1.2') {
+        exclude group: 'com.sun.jersey'
+    }
+
+    compile group: 'org.apache.hadoop', name: 'hadoop-client', version: '2.0.0-mr1-cdh4.2.0'
 
     compile group: 'org.apache.avro', name: 'avro', version: '1.7.4'
     compile group: 'org.apache.avro', name: 'avro-mapred', version: '1.7.4'
@@ -48,7 +53,6 @@ dependencies {
     compile group: 'cascading.avro', name: 'avro-scheme', version: '2.1.1'
 
     compile group: 'commons-daemon', name: 'commons-daemon', version: '1.0.15'
-    compile group: 'com.cloudera', name: 'cdk-data', version: '0.2.0'
 
     cucumberRuntime files("${jar.archivePath}")
 
@@ -56,6 +60,7 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.11'
     testCompile group: 'info.cukes', name: 'cucumber-java', version: '1.1.2'
     testCompile group: 'info.cukes', name: 'cucumber-junit', version: '1.1.2'
+    testCompile group: 'info.cukes', name: 'cucumber-picocontainer', version: '1.1.2'
     testCompile group: 'org.elasticsearch', name: 'elasticsearch', version: '0.20.6'
     testCompile group: 'org.hamcrest', name: 'hamcrest-all', version: '1.3'
     testCompile group: 'org.hamcrest', name: 'hamcrest-core', version: '1.3'

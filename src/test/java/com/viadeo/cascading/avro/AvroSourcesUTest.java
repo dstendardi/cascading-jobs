@@ -5,10 +5,10 @@ import cascading.avro.AvroScheme;
 import cascading.pipe.Pipe;
 import cascading.tap.Tap;
 import cascading.tap.hadoop.Lfs;
-import com.google.common.collect.ImmutableMap;
 import com.google.common.io.Files;
 import org.apache.commons.io.FileUtils;
-import org.junit.*;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
@@ -23,7 +23,7 @@ public class AvroSourcesUTest {
     private static File tmp;
 
     @Before
-    public void setUp(){
+    public void setUp() {
         tmp = Files.createTempDir();
     }
 
@@ -33,12 +33,12 @@ public class AvroSourcesUTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void createSource_withoutSpecifiedPath_shouldThrowException(){
+    public void createSource_withoutSpecifiedPath_shouldThrowException() {
         new AvroSources(null);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void createSource_withUnknownPath_shouldThrowException(){
+    public void createSource_withUnknownPath_shouldThrowException() {
         new AvroSources("plop");
     }
 

@@ -5,7 +5,9 @@ The following repository contains a set of cascading jobs.
 
 ## Setup
 
-Fist, you must have an elasticsearch instance running on your localhost.
+you must have the following componants running on your localhost :
+  * elasticsearch
+  * hbase
 
 Cucumber tests are not yet integrated to main build, due to the following [issue](https://github.com/cucumber/cucumber-jvm/issues/468).
 Thereby you have to launch the goal manually :

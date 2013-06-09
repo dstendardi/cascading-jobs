@@ -4,6 +4,8 @@ import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
 import com.google.common.io.Files;
 import com.google.common.io.Resources;
+import com.viadeo.cascading.Criteria;
+import com.viadeo.cascading.Migration;
 import cucumber.api.DataTable;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
@@ -36,6 +38,7 @@ import java.util.Map;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 public class MainSteps {
+    private final HdfsSteps hdfsSteps;
 
     public static final String INDEX_NAME = "criteria";
     public static final String INDEX_TYPE = "main";
@@ -45,6 +48,11 @@ public class MainSteps {
     public static final URL RESOURCE = Resources.getResource("elasticsearch/index.json");
     private File tmp;
     private Schema schema;
+
+
+    public MainSteps(HdfsSteps hdfsSteps) {
+        this.hdfsSteps = hdfsSteps;
+    }
 
     @Before
     public void setUp() throws Exception {
@@ -90,15 +98,27 @@ public class MainSteps {
         paths.add(input.getAbsolutePath());
     }
 
-    @When("^I run the \"([^\"]*)\" job$")
-    public void I_run_given_job(String job) throws Throwable {
-        Class<?> clazz = Class.forName("com.viadeo.cascading." + job);
+    @When("^I run the criteria job$")
+    public void I_run_criteria_job() throws Throwable {
         String[] arguments = this.paths.toArray(new String[this.paths.size()]);
-        clazz.getMethod("main", new Class[]{String[].class}).invoke(clazz, new Object[]{arguments});
+        Criteria.main(arguments);
     }
 
-    @Then("^the output file should contain the following lines$")
-    public void the_output_file_should_contain_the_following_lines(final List<Row> expected) throws Throwable {
+    @When("^I run the migration job with the following arguments$")
+    public void I_run_migration_job(DataTable datatable) throws Throwable {
+
+        Map<String, String> maps = datatable.asMaps().get(0);
+        Migration.main(
+                hdfsSteps.getTmpDirectory().getAbsolutePath(),
+                maps.get("start date"),
+                maps.get("end date"),
+                maps.get("prefixes")
+        );
+    }
+
+
+    @Then("^the criteria index should contains the following documents$")
+    public void the_criteria_index_should_contain_the_following_documents(final List<Row> expected) throws Throwable {
         SearchResponse response = client.prepareSearch(INDEX_NAME)
                 .setTypes(INDEX_TYPE)
                 .setQuery(QueryBuilders.matchAllQuery())

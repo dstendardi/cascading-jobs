@@ -28,8 +28,8 @@ Feature: Criteria computations
       | 18 | Paris |
       | 19 | PARIS |
       | 20 | PARIS |
-    When I run the "Criteria" job
-    Then the output file should contain the following lines
+    When I run the criteria job
+    Then the criteria index should contains the following documents
       | preferred | normalized | origin      | type     |
       | false     | javascript | Java Script | skill    |
       | true      | javascript | JavaScript  | skill    |

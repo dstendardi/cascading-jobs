@@ -15,7 +15,7 @@ public class StringFunction extends BaseOperation implements Function {
     private final String fieldName;
     private final StringOperation operation;
 
-    public StringFunction(Fields fieldDeclaration, String fieldName, StringOperation operation){
+    public StringFunction(Fields fieldDeclaration, String fieldName, StringOperation operation) {
         super(fieldDeclaration);
         this.fieldName = fieldName;
         this.operation = operation;
@@ -31,7 +31,7 @@ public class StringFunction extends BaseOperation implements Function {
         functionCall.getOutputCollector().add(result);
     }
 
-    public interface StringOperation extends Serializable{
+    public interface StringOperation extends Serializable {
         String operate(String value);
     }
 }

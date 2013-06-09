@@ -7,6 +7,7 @@ import cascading.pipe.Pipe;
 import cascading.tap.Tap;
 import cascading.tap.hadoop.Lfs;
 import cascading.tuple.Fields;
+import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.commons.io.FilenameUtils;
@@ -21,15 +22,17 @@ public class AvroSources {
 
     private List<Source> sources;
 
-    private class Source  {
+    private class Source {
         public Pipe pipe;
         public Tap tap;
 
-        Source (Pipe pipe, Tap tap) {
+        Source(Pipe pipe, Tap tap) {
             this.pipe = pipe;
             this.tap = tap;
         }
-    };
+    }
+
+    ;
 
     /**
      * Build a source list from given class paths
@@ -37,6 +40,9 @@ public class AvroSources {
      * @param paths source files
      */
     public AvroSources(String... paths) {
+
+        Preconditions.checkArgument(paths != null);
+
         sources = Lists.newArrayList();
         for (String path : paths) {
             Source type = asSource(path);
@@ -53,7 +59,7 @@ public class AvroSources {
     public HashMap<String, Tap> asMap() {
 
         HashMap<String, Tap> map = Maps.newHashMap();
-        for(Source source : sources) {
+        for (Source source : sources) {
             map.put(source.pipe.getName(), source.tap);
         }
 
@@ -68,7 +74,7 @@ public class AvroSources {
     public Pipe[] asPipes() {
 
         ArrayList<Pipe> pipes = Lists.newArrayList();
-        for(Source source : sources) {
+        for (Source source : sources) {
             pipes.add(source.pipe);
         }
 
@@ -83,20 +89,20 @@ public class AvroSources {
      */
     private Source asSource(String path) {
 
-        if(path == null){
+        if (path == null) {
             throw new IllegalArgumentException("path cannot be null");
         }
 
         File file = new File(path);
 
-        if(!(file.exists() && file.isFile())){
+        if (!(file.exists() && file.isFile())) {
             throw new IllegalArgumentException("path should refer to an existing file");
         }
 
         String type = FilenameUtils.removeExtension(file.getName());
 
         Pipe pipe = new Pipe(type + ":path");
-        pipe = new Each(pipe, new Fields("id", "term"), new Insert(new Fields("type"),  type), Fields.ALL);
+        pipe = new Each(pipe, new Fields("id", "term"), new Insert(new Fields("type"), type), Fields.ALL);
 
         return new Source(pipe, new Lfs(new AvroScheme(), path));
     }

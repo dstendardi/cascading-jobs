@@ -74,17 +74,17 @@ public class Criteria {
 
     /**
      * Joins the count pipe and the max pipe
-     *
+     * <p/>
      * As we have duplicate fields between this two pipes (normalized, type)
      * we declare output fields names prefixed by the pipe first letter (n, m)
-     *
+     * <p/>
      * We then retain and rename the following fields
      * [origin, normalized, type, count, max]
-     *
+     * <p/>
      * Then we create a new boolean column named preferred with a value resulting from an expression
      *
      * @param count pipe containing [term, normalized, type, count]
-     * @param max pipe containing [normalized, type, max]
+     * @param max   pipe containing [normalized, type, max]
      * @return joined pipe containing [preferred, origin, normalized, type]
      */
     private static Pipe join(Pipe count, Pipe max) {
