@@ -27,7 +27,6 @@ import org.elasticsearch.common.transport.InetSocketTransportAddress;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.sort.SortBuilders;
-import org.hamcrest.Matchers;
 
 import java.io.File;
 import java.io.IOException;
@@ -35,7 +34,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.Map;
 
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertEquals;
 
 public class MainSteps {
     private final HdfsSteps hdfsSteps;
@@ -132,7 +131,7 @@ public class MainSteps {
             actual.add(createRow(hit.getSource()));
         }
 
-        assertThat(actual, Matchers.equalTo(expected));
+        assertEquals(actual, expected);
     }
 
     private Row createRow(Map<String, Object> source) {

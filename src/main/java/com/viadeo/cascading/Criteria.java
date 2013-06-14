@@ -98,7 +98,7 @@ public class Criteria {
         join = new Rename(join, new Fields("n_term", "n_normalized", "n_type", "n_count", "m_max"), new Fields("origin", "normalized", "type", "count", "max"));
 
         Fields transformArguments = new Fields("origin", "normalized", "type", "count", "max");
-        join = new Each(join, transformArguments, new ExpressionFunction(new Fields("preferred"), "count == max", Integer.class), Fields.ALL);
+        join = new Each(join, transformArguments, new ExpressionFunction(new Fields("preferred"), "count == max", Long.class), Fields.ALL);
         join = new Retain(join, new Fields("preferred", "origin", "normalized", "type"));
 
         return join;

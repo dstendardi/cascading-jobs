@@ -28,6 +28,7 @@ Feature: Criteria computations
       | 18 | Paris |
       | 19 | PARIS |
       | 20 | PARIS |
+      | 21 | php   |
     When I run the criteria job
     Then the criteria index should contains the following documents
       | preferred | normalized | origin      | type     |
@@ -43,3 +44,4 @@ Feature: Criteria computations
       | false     | javascript | jāvascript  | skill    |
       | false     | paris      | paris       | location |
       | false     | php        | php         | skill    |
+      | false     | php        | php         | location |
