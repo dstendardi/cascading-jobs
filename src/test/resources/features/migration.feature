@@ -1,5 +1,6 @@
 Feature: Migration from hbase to hdfs
 
+  @hbase
   Scenario: Extract various formats from hbase and put them in hdfs
     Given a table "events" containing the following cells
       | row                                          | family | qualifier            | timestamp     | value                                            |

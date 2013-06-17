@@ -1,6 +1,7 @@
 package com.viadeo.cascading.steps;
 
 import com.google.common.base.Objects;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.io.Files;
 import com.google.common.io.Resources;
@@ -35,6 +36,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class MainSteps {
     private final HdfsSteps hdfsSteps;
@@ -130,8 +132,11 @@ public class MainSteps {
         for (SearchHit hit : response.hits().getHits()) {
             actual.add(createRow(hit.getSource()));
         }
-
-        assertEquals(actual, expected);
+        
+        actual.removeAll(expected);
+        assertTrue(Objects.toStringHelper(actual)
+                .addValue(actual)
+                .toString(), actual.isEmpty());
     }
 
     private Row createRow(Map<String, Object> source) {

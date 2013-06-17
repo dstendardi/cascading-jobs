@@ -32,7 +32,7 @@ public class HBaseSteps {
         String value;
     }
 
-    @Before
+    @Before("@hbase")
     public void setupHBase() throws Exception {
         conf = HBaseConfiguration.create();
         admin = new HBaseAdmin(conf);
