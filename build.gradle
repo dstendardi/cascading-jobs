@@ -36,6 +36,7 @@ dependencies {
         exclude group: 'com.sun.jersey'
     }
 
+    compile group: 'net.sf.trove4j', name: 'trove4j', version: '3.0.3'
     compile group: 'org.apache.hadoop', name: 'hadoop-client', version: '2.0.0-mr1-cdh4.2.0'
 
     compile group: 'org.apache.avro', name: 'avro', version: '1.7.4'
